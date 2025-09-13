@@ -1,3 +1,7 @@
+// Copyright (c) 2022 The ZMK Contributors
+// SPDX-License-Identifier: MIT
+
+
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
@@ -25,6 +29,8 @@
         };
     };
 
+
+
     keymap {
         compatible = "zmk,keymap";
         default_layer {
@@ -40,14 +46,15 @@
         //                                     ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛   ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
             >;
         };
-        L2 {
+
+        shift_layer {
             bindings = <
         //             ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓   ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
                        &kp GRAVE   &kp N1      &kp N2      &kp N3      &trans          &trans      &trans      &kp UARW    &kp MINUS   &kp EQUAL
         //             ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫
                        &trans      HRML(N4,        N5,         N6)     &trans          &kp HOME    &kp LARW    &kp DARW    &kp RARW    &kp END   
         // ┏━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┓
-           &trans      &trans      &kp N7      &kp N8      &kp N9      &kp N0          &kp SEMI    &kp SQT     &kp LBKT    &kp RBKT    &kp trans   &trans   
+           &trans      &trans      &kp N7      &kp N8      &kp N9      &kp N0          &kp SEMI    &kp SQT     &kp LBKT    &kp RBKT    &trans   &trans   
         // ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
                                                &trans      &trans      &trans          &trans      &trans      &trans 
         //                                     ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛   ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
