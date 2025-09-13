@@ -8,11 +8,11 @@
 #include <dt-bindings/zmk/outputs.h>
 
 // Home row mods macro
-#define HRML(k2,k3,k4) &ht LCTRL k2  &ht LALT k3  &ht LGUI k4
-#define HRMR(k1,k2,k3) &ht RGUI k1  &ht RALT k2  &ht RCTRL k3
+#define HRML(k1,k2,k3,k4) &ht LSHIFT k1 &ht LCTRL k2  &ht LALT k3  &ht LGUI k4
+#define HRMR(k1,k2,k3,k4) &ht RGUI k1  &ht RALT k2  &ht RCTRL k3  &ht RSHIFT k4
 
-#define MAC 0
-#define RIG 1
+#define L0 0
+#define L1 1
 
 
 / {
@@ -38,11 +38,11 @@
         //             ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓   ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
                        &kp Q       &kp W       &kp E       &kp R       &kp T           &kp Y       &kp U       &kp I       &kp O       &kp P
         //             ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫
-                       &kp A       HRML(S,         D,          F)      &kp G           &kp H       HRMR(J,         K,          L)      &kp BSLH   
+                      HRML(A,          S,          D,          F)      &kp G           &kp H      HRMR(J,          K,          L,          BSLH)   
         // ┏━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┓
-           &kp Z       &kp Z       &kp X      &kp C        &kp V       &kp B           &kp N       &kp M       &kp COMMA   &kp DOT     &kp FSLH    &kp FSLH   
+           &kp Z       &kp Z       &kp X       &kp C       &kp V       &kp B           &kp N       &kp M       &kp COMMA   &kp DOT     &kp FSLH    &kp FSLH   
         // ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
-                                             &ht LGUI ESC  &kp LSHIFT  &kp TAB       &lt RIG SPACE  &kp BSPC    &kp ENTER
+                                               &kp ESC     &lt L2 TAB  &kp LSHIFT      &lt L1 SPACE  &kp BSPC    &kp ENTER
         //                                     ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛   ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
             >;
         };
@@ -52,9 +52,9 @@
         //             ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓   ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
                        &kp GRAVE   &kp N1      &kp N2      &kp N3      &trans          &trans      &trans      &kp UARW    &kp MINUS   &kp EQUAL
         //             ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫
-                       &trans      HRML(N4,        N5,         N6)     &trans          &kp HOME    &kp LARW    &kp DARW    &kp RARW    &kp END   
+                      HRML(A,          N4,         N5,         N6)     &trans          &kp HOME    &kp LARW    &kp DARW    &kp RARW    &kp END   
         // ┏━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┓
-           &trans      &trans      &kp N7      &kp N8      &kp N9      &kp N0          &kp SEMI    &kp SQT     &kp LBKT    &kp RBKT    &trans   &trans   
+           &trans      &trans      &kp N7      &kp N8      &kp N9      &kp N0          &kp SEMI    &kp SQT     &kp LBKT    &kp RBKT    &trans      &trans   
         // ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
                                                &trans      &trans      &trans          &trans      &trans      &trans 
         //                                     ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛   ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
