@@ -1,11 +1,16 @@
 manifest:
   remotes:
-  - name: zmkfirmware
-    url-base: https://github.com/zmkfirmware
+    - name: zmkfirmware
+      url-base: https://github.com/zmkfirmware
+    - name: grassfedreeve
+      url-base: https://github.com/grassfedreeve
   projects:
-  - name: zmk
-    remote: zmkfirmware
-    revision: v0.3
-    import: app/west.yml
+    - name: zmk
+      remote: zmkfirmware
+      revision: main
+      import: app/west.yml
+    - name: zmk-keyboards-pueo
+      remote: grassfedreeve
+      revision: main
   self:
     path: config
