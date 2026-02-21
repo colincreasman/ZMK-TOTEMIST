@@ -1,15 +1,11 @@
 manifest:
   remotes:
-  - name: zmkfirmware
-    url-base: https://github.com/zmkfirmware
+    - name: zmkfirmware
+      url-base: https://github.com/zmkfirmware
   projects:
-  - name: zmk
-    remote: zmkfirmware
-    revision: main
-    import: app/west.yml
-  - name: zmk-keyboards-totem
-    url: https://github.com/victorlucachi/zmk-keyboards-totem
-    revision: main
-    path: modules/zmk-keyboards-totem
+    - name: zmk
+      remote: zmkfirmware
+      revision: v0.3.0
+      import: app/west.yml
   self:
     path: config
