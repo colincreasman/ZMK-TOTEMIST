@@ -18,21 +18,12 @@
             label = "hold_tap";
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "balanced";
+            flavor = "hold-preferred";
             tapping-term-ms = <110>;
             quick-tap-ms = <150>;
             global-quick-tap;
             bindings = <&kp>, <&kp>;
         };
-        // combos {
-        //     compatible = "zmk,combos";
-        //     combo_media {
-        //         timeout-ms = <50>;
-        //         key-positions = <33 36>;  // Combo middle thumb keys for L2
-        //         bindings = <&mo L2>;
-        //     };
-        // };
-        
     };
 
 
