@@ -28,6 +28,11 @@
             compatible = "zmk,combos";
             combo_media {
                 // timeout-ms = <50>;
+                key-positions = <8 9>;  // Combo o+p for ESCAPE
+                bindings = <&kp ESC>;
+            };
+            combo_media {
+                // timeout-ms = <50>;
                 key-positions = <0 1>;  // Combo q+w for ESCAPE
                 bindings = <&kp ESC>;
             };
