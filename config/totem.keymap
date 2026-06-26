@@ -27,8 +27,8 @@
         combos {
             compatible = "zmk,combos";
             combo_media {
-                timeout-ms = <50>;
-                key-positions = <31 33>;  // Combo inner thumb keys for ESCAPE
+                // timeout-ms = <50>;
+                key-positions = <0 1>;  // Combo q+w for ESCAPE
                 bindings = <&kp ESC>;
             };
         };
@@ -58,7 +58,7 @@
         //             ╭───────────┬───────────┬───────────┬───────────┬───────────╮   ╭───────────┬───────────┬───────────┬───────────┬───────────╮
                        &kp ESC     &kp N1      &kp N2      &kp N3      &trans          &trans      &trans      &kp UP      &kp MINUS   &kp EQUAL
         //             ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
-                       HRML(GRAVE,     N4,         N5,         N6)     &trans          &kp HOME    &kp LEFT    &kp DOWN    &kp RIGHT   &trans 
+                       HRML(GRAVE,     N4,         N5,         N6)     &trans          &trans      &kp LEFT    &kp DOWN    &kp RIGHT   &trans 
         // ╭───────────├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────├───────────╮
            &trans      &trans      &kp N7      &kp N8      &kp N9      &kp N0          &kp SEMI    &kp SQT     &kp LBKT    &kp RBKT    &trans      &trans   
         // ╰───────────┴───────────┴───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────┴───────────┴───────────╯
