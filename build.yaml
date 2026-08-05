@@ -1,7 +1,5 @@
 include:
-- board: xiao_ble//zmk
+- board: seeeduino_xiao_ble
   shield: totem_left
-  artifact-name: totem_left
-- board: xiao_ble//zmk
+- board: seeeduino_xiao_ble
   shield: totem_right
-  artifact-name: totem_right
