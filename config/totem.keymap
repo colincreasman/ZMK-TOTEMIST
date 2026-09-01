@@ -7,8 +7,9 @@
 #define HRML(k1,k2,k3,k4) &hml LSHFT k1 &hml LCTRL k2  &hml LALT k3  &hml LGUI k4
 #define HRMR(k1,k2,k3,k4) &hmr RGUI k1  &hmr RALT k2  &hmr RCTRL k3  &hmr RSHFT k4 
 
-// Positional hold-tap key positions for "timeless" homerow mods.
-// Derived from the matrix transform in
+// Key positions for positional hold-tap, kept for reference. Currently unused:
+// the homerow mods below deliberately do NOT use cross-hand gating (see the
+// note on `hml`). Derived from the matrix transform in
 // config/boards/shields/totem/totem.dtsi (38 keys, 0-based binding order):
 //   Row 0:        0  1  2  3  4  |  5  6  7  8  9
 //   Row 1:       10 11 12 13 14  | 15 16 17 18 19
@@ -60,22 +61,36 @@
             bindings = <&kp>, <&kp>;
         };
 
-        // "Timeless" homerow mods: a large tapping-term paired with
-        // require-prior-idle-ms eliminates the typing delay, while cross-hand
-        // positional hold-tap (hold-trigger-key-positions) resolved on release
-        // avoids false mods on same-hand rolls yet still lets same-hand mods
-        // be combined. Previously the homerow shared the thumb `ht` behavior,
-        // which had neither positional gating nor a separate tuning.
+        // Homerow mods.
+        //
+        // These are split out from the thumb `ht` behavior so the two can be
+        // tuned independently, but the *timing* here deliberately reproduces
+        // the pre-split behavior (balanced / 220ms / prior-idle 150ms), which
+        // was working well.
+        //
+        // NOTE: no `hold-trigger-key-positions` / `hold-trigger-on-release`.
+        // Those implement urob's cross-hand ("timeless") positional hold-tap,
+        // where a homerow mod can ONLY resolve as a hold if the next key is on
+        // the opposite half. That gate has no timeout escape hatch: holding
+        // LGUI (F) and pressing C -- both left hand -- can never become a hold,
+        // so it emits "fc" no matter how long F is held. That breaks the entire
+        // left-hand shortcut cluster (CMD/CTRL + Q W A S Z X C V) and every
+        // left-hand capital via LSHFT on A, which is why the left half felt far
+        // worse than the right.
+        //
+        // Trade-off: without positional gating, a fast same-hand roll starting
+        // on the homerow ("as", "sad", "fad") can register a mod if it begins
+        // after >150ms of idle time. If that becomes the more annoying failure
+        // mode, re-add the two properties below (KEYS_R THUMBS for hml,
+        // KEYS_L THUMBS for hmr) and use combos for same-hand shortcuts.
         hml: home_row_mod_left {
             label = "hrm_left";
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms = <280>;
-            quick-tap-ms = <175>;
+            tapping-term-ms = <220>;
+            quick-tap-ms = <150>;
             require-prior-idle-ms = <150>;
-            hold-trigger-key-positions = <KEYS_R THUMBS>;
-            hold-trigger-on-release;
             bindings = <&kp>, <&kp>;
         };
 
@@ -84,11 +99,9 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms = <280>;
-            quick-tap-ms = <175>;
+            tapping-term-ms = <220>;
+            quick-tap-ms = <150>;
             require-prior-idle-ms = <150>;
-            hold-trigger-key-positions = <KEYS_L THUMBS>;
-            hold-trigger-on-release;
             bindings = <&kp>, <&kp>;
         };
     };
