@@ -1,0 +1,30 @@
+/*
+ * TOTEM dongle: a keyless central that owns the keymap, combos and host
+ * connection, with both halves as its peripherals.
+ *
+ * Board-agnostic: any BLE-capable ZMK board works as the dongle. The PandaKB
+ * dongle's OLED wiring lives separately in the pandakb_dongle shield.
+ *
+ * All parts of a split must share the exact same matrix transform, so this
+ * pulls it in from totem.dtsi rather than copying it.
+ */
+
+#include "totem.dtsi"
+
+/ {
+    chosen {
+        zmk,kscan = &mock_kscan;
+    };
+
+    mock_kscan: mock_kscan {
+        compatible = "zmk,kscan-mock";
+        columns = <0>;
+        rows = <0>;
+        events = <0>;
+    };
+};
+
+// totem.dtsi declares the halves' key matrix on XIAO pins, which the dongle
+// (a nice!nano) does not have. The dongle has no keys, so the matrix is
+// dropped; deleting the node also drops its references to those pins.
+/delete-node/ &kscan0;
