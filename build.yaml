@@ -1,5 +1,25 @@
 include:
+# ---- Standalone mode: the left half is the central -------------------------
 - board: seeeduino_xiao_ble
   shield: totem_left
+# The right half is a peripheral in BOTH modes, so this one build serves
+# standalone and dongle mode alike.
 - board: seeeduino_xiao_ble
   shield: totem_right
+- board: seeeduino_xiao_ble
+  shield: settings_reset
+
+# ---- Dongle mode: the PandaKB USB dongle is the central --------------------
+- board: nice_nano_v2
+  shield: totem_dongle pandakb_dongle dongle_display
+  artifact-name: totem_dongle
+# Same left half, rebuilt as a plain peripheral of the dongle.
+- board: seeeduino_xiao_ble
+  shield: totem_left
+  cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
+  artifact-name: totem_left_dongle_mode
+# The dongle is a nice!nano, a different board from the halves' XIAO, so it
+# needs its own settings reset image.
+- board: nice_nano_v2
+  shield: settings_reset
+  artifact-name: settings_reset_dongle
