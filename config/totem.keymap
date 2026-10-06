@@ -153,22 +153,24 @@
     keymap {
         compatible = "zmk,keymap";
 
-        // The right bottom pinky switch (position 29) is dead in hardware, so
-        // its `/` and the right outer thumb's ESC are swapped. The thumb is a
-        // plain `/` with no hold of its own; holding it with the left outer
-        // thumb still enters SYS, because that chord is a combo on positions
-        // 30 and 35, not part of either key's binding.
+        // The right bottom pinky switch (position 29) is dead in hardware. Its
+        // `/` is now the tap of the right home-row pinky, which keeps its RSHFT
+        // hold; the `\` that key used to tap is on the right outer thumb; and
+        // the thumb's old ESC is on the dead key. The thumb has no hold of its
+        // own; holding it with the left outer thumb still enters SYS, because
+        // that chord is a combo on positions 30 and 35, not part of either
+        // key's binding.
         layer_zero {
             display-name = "ABC";
             bindings = <
         //             ╭───────────┬───────────┬───────────┬───────────┬───────────╮   ╭───────────┬───────────┬───────────┬───────────┬───────────╮
                        &kp Q       &kp W       &kp E       &kp R       &kp T           &kp Y       &kp U       &kp I       &kp O       &kp P
         //             ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
-                       HRML(A,         S,          D,          F)      &kp G           &kp H       HRMR(J,         K,          L,          BSLH)   
+                       HRML(A,         S,          D,          F)      &kp G           &kp H       HRMR(J,         K,          L,          FSLH)   
         //             ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
                        &kp Z       &kp X       &kp C       &kp V       &kp B           &kp N       &kp M       &kp COMMA   &kp DOT     &kp ESC
         //             ╰───────────┴───────────┴───────────├───────────├───────────┤   ├───────────├───────────├───────────┴───────────┴───────────╯
-                                             &ht LG(C) ESC  &kp RET   &ht LSHFT TAB    &lt L1 SPACE  &kp BSPC   &kp FSLH
+                                             &ht LG(C) ESC  &kp RET   &ht LSHFT TAB    &lt L1 SPACE  &kp BSPC   &kp BSLH
         //                                     ╰───────────┴───────────┴───────────╯   ╰───────────┴───────────┴───────────╯
             >;
         };
