@@ -42,7 +42,7 @@
 / {
     behaviors {
         // Thumb hold-tap. Drives the thumb keys on BOTH halves:
-        // `&ht LG(C) ESC`, `&ht LSHFT TAB` (left) and `&ht RG(V) ESC` (right).
+        // `&ht LG(C) ESC`, `&ht LSHFT TAB` (left) and `&ht RG(V) FSLH` (right).
         //
         // Deliberately has NO `global-quick-tap` / `require-prior-idle-ms`.
         // Those make ZMK resolve the key to an *instant tap* whenever any other
@@ -153,6 +153,9 @@
     keymap {
         compatible = "zmk,keymap";
 
+        // The right bottom pinky switch (position 29) is dead in hardware, so
+        // its `/` and the right outer thumb's ESC tap are swapped. The thumb
+        // keeps its Cmd+V hold and its half of the two-thumb SYS chord.
         layer_zero {
             display-name = "ABC";
             bindings = <
@@ -161,9 +164,9 @@
         //             ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
                        HRML(A,         S,          D,          F)      &kp G           &kp H       HRMR(J,         K,          L,          BSLH)   
         //             ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
-                       &kp Z       &kp X       &kp C       &kp V       &kp B           &kp N       &kp M       &kp COMMA   &kp DOT     &kp FSLH
+                       &kp Z       &kp X       &kp C       &kp V       &kp B           &kp N       &kp M       &kp COMMA   &kp DOT     &kp ESC
         //             ╰───────────┴───────────┴───────────├───────────├───────────┤   ├───────────├───────────├───────────┴───────────┴───────────╯
-                                             &ht LG(C) ESC  &kp RET   &ht LSHFT TAB    &lt L1 SPACE  &kp BSPC   &ht RG(V) ESC
+                                             &ht LG(C) ESC  &kp RET   &ht LSHFT TAB    &lt L1 SPACE  &kp BSPC   &ht RG(V) FSLH
         //                                     ╰───────────┴───────────┴───────────╯   ╰───────────┴───────────┴───────────╯
             >;
         };
