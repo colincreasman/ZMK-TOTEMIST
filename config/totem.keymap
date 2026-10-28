@@ -35,8 +35,8 @@
 // pressed and released, which is exactly what a layer chord looks like.
 &lt {
     flavor = "balanced";
-    tapping-term-ms = <200>;
-    quick-tap-ms = <175>;
+    tapping-term-ms = <175>;
+    quick-tap-ms = <125>;
 };
 
 / {
@@ -58,17 +58,17 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms = <200>;
-            quick-tap-ms = <175>;
+            tapping-term-ms = <175>;
+            quick-tap-ms = <125>;
             bindings = <&kp>, <&kp>;
         };
 
         // Homerow mods.
         //
         // These are split out from the thumb `ht` behavior so the two can be
-        // tuned independently, but the *timing* here deliberately reproduces
-        // the pre-split behavior (balanced / 220ms / prior-idle 150ms), which
-        // was working well.
+        // tuned independently. Timing was 220ms / prior-idle 150ms; it is now
+        // 190ms / 100ms to bias toward HOLD, since missed holds proved far
+        // more common than false ones.
         //
         // NOTE: no `hold-trigger-key-positions` / `hold-trigger-on-release`.
         // Those implement urob's cross-hand ("timeless") positional hold-tap,
@@ -82,7 +82,7 @@
         //
         // Trade-off: without positional gating, a fast same-hand roll starting
         // on the homerow ("as", "sad", "fad") can register a mod if it begins
-        // after >150ms of idle time. If that becomes the more annoying failure
+        // after >100ms of idle time. If that becomes the more annoying failure
         // mode, re-add the two properties below (KEYS_R THUMBS for hml,
         // KEYS_L THUMBS for hmr) and use combos for same-hand shortcuts.
         hml: home_row_mod_left {
@@ -90,9 +90,9 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms = <220>;
-            quick-tap-ms = <150>;
-            require-prior-idle-ms = <150>;
+            tapping-term-ms = <190>;
+            quick-tap-ms = <120>;
+            require-prior-idle-ms = <100>;
             bindings = <&kp>, <&kp>;
         };
 
@@ -101,9 +101,9 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms = <220>;
-            quick-tap-ms = <150>;
-            require-prior-idle-ms = <150>;
+            tapping-term-ms = <190>;
+            quick-tap-ms = <120>;
+            require-prior-idle-ms = <100>;
             bindings = <&kp>, <&kp>;
         };
 
