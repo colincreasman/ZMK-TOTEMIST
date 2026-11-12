@@ -1,3 +1,11 @@
 config ZMK_BEHAVIOR_LONG_PRESS
     bool "Long-press behavior"
     default y
+
+DT_COMPAT_ZMK_BEHAVIOR_HYPER_GUARD := zmk,behavior-hyper-guard
+
+config ZMK_BEHAVIOR_HYPER_GUARD
+    bool "Hyper-chord guard behavior"
+    default $(dt_compat_enabled,$(DT_COMPAT_ZMK_BEHAVIOR_HYPER_GUARD))
+    help
+      Drop the guarded key when Ctrl, Shift, Alt and GUI are all held.

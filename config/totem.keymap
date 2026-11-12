@@ -41,8 +41,7 @@
 
 / {
     behaviors {
-        // Thumb hold-tap, used by the left thumbs `&ht LG(C) ESC` and
-        // `&ht LSHFT TAB`.
+        // Grave/Shift and Tab/Shift on the left; minus/GUI on the right.
         //
         // Deliberately has NO `global-quick-tap` / `require-prior-idle-ms`.
         // Those make ZMK resolve the key to an *instant tap* whenever any other
@@ -125,6 +124,11 @@
             bindings = <&bootloader>;
             central;
         };
+
+        hyper_guard: hyper_guard {
+            compatible = "zmk,behavior-hyper-guard";
+            #binding-cells = <1>;
+        };
     };
 
     combos {
@@ -153,13 +157,8 @@
     keymap {
         compatible = "zmk,keymap";
 
-        // The right bottom pinky switch (position 29) is dead in hardware. Its
-        // `/` is now the tap of the right home-row pinky, which keeps its RSHFT
-        // hold; the `\` that key used to tap is on the right outer thumb; and
-        // the thumb's old ESC is on the dead key. The thumb has no hold of its
-        // own; holding it with the left outer thumb still enters SYS, because
-        // that chord is a combo on positions 30 and 35, not part of either
-        // key's binding.
+        // Position 29 is dead in hardware. Keep slash on the working right
+        // home-row pinky and put Enter on L1+A and backslash on L1+slash.
         layer_zero {
             display-name = "ABC";
             bindings = <
@@ -168,9 +167,9 @@
         //             ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
                        HRML(A,         S,          D,          F)      &kp G           &kp H       HRMR(J,         K,          L,          FSLH)   
         //             ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
-                       &kp Z       &kp X       &kp C       &kp V       &kp B           &kp N       &kp M       &kp COMMA   &kp DOT     &kp ESC
+                       &kp Z       &kp X       &kp C       &kp V       &kp B           &kp N       &kp M       &kp COMMA   &hyper_guard DOT &none
         //             ╰───────────┴───────────┴───────────├───────────├───────────┤   ├───────────├───────────├───────────┴───────────┴───────────╯
-                                             &ht LG(C) ESC  &kp RET   &ht LSHFT TAB    &lt L1 SPACE  &kp BSPC   &kp BSLH
+                                             &ht LSHFT GRAVE &mo L1  &ht LSHFT TAB    &lt L1 SPACE  &kp BSPC   &ht RGUI MINUS
         //                                     ╰───────────┴───────────┴───────────╯   ╰───────────┴───────────┴───────────╯
             >;
         };
@@ -180,11 +179,11 @@
             display-name = "NUM";
             bindings = <
         //             ╭───────────┬───────────┬───────────┬───────────┬───────────╮   ╭───────────┬───────────┬───────────┬───────────┬───────────╮
-                       &kp ESC     &kp N1      &kp N2      &kp N3      &trans          &trans      &trans      &kp UP      &kp MINUS   &kp EQUAL
+                       &kp N1      &kp N2      &kp N3      &kp N4      &kp N5          &kp N6      &kp N7      &kp N8      &kp N9      &kp N0
         //             ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
-                       HRML(GRAVE,     N4,         N5,         N6)     &trans          &trans      &kp LEFT    &kp DOWN    &kp RIGHT   &trans 
+                       &kp RET     &trans      &trans      &trans      &kp EQUAL       &kp LEFT    &kp DOWN    &kp UP      &kp RIGHT   &ht RSHFT BSLH
         //             ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
-                       &trans      &kp N7      &kp N8      &kp N9      &kp N0          &kp SEMI    &kp SQT     &kp LBKT    &kp RBKT    &trans
+                       &kp LPAR    &kp RPAR    &kp LBRC    &kp RBRC    &kp QMARK       &kp SEMI    &kp SQT     &kp LBKT    &kp RBKT    &none
         //             ╰───────────┴───────────┴───────────├───────────├───────────┤   ├───────────├───────────├───────────┴───────────┴───────────╯
                                                &trans      &trans      &trans          &trans      &trans      &trans 
         //                                     ╰───────────┴───────────┴───────────╯   ╰───────────┴───────────┴───────────╯
