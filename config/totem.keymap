@@ -295,22 +295,22 @@
         };
         combo_minus {
             timeout-ms = <25>;
-            key-positions = <10 11>;
+            key-positions = <20 21>;
             bindings = <&fixed_minus>;
         };
         combo_equal {
             timeout-ms = <25>;
-            key-positions = <18 19>;
+            key-positions = <28 29>;
             bindings = <&fixed_equal>;
         };
         combo_under {
             timeout-ms = <25>;
-            key-positions = <20 10>;
+            key-positions = <10 11>;
             bindings = <&fixed_under>;
         };
         combo_plus {
             timeout-ms = <25>;
-            key-positions = <28 29>;
+            key-positions = <18 19>;
             bindings = <&fixed_plus>;
         };
         combo_maintenance_layer {

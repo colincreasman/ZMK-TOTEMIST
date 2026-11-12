@@ -35,10 +35,10 @@ def tap(position):
 
 
 global_combos = [
-    ((10, 11), 0x2D, 0),  # A+S -> -
-    ((18, 19), 0x2E, 0),  # L+backslash -> =
-    ((20, 10), 0x2D, 2),  # Z+A -> _
-    ((28, 29), 0x2E, 2),  # period+slash -> +
+    ((20, 21), 0x2D, 0),  # Z+X -> -
+    ((28, 29), 0x2E, 0),  # period+slash -> =
+    ((10, 11), 0x2D, 2),  # A+S -> _
+    ((18, 19), 0x2E, 2),  # L+backslash -> +
     ((22, 23), 0x26, 2),  # C+V -> (
     ((26, 27), 0x27, 2),  # M+comma -> )
     ((12, 13), 0x2F, 0),  # D+F -> [
@@ -72,12 +72,7 @@ for layer in range(4):
     if layer:
         event(False, 35 + layer, 300)
 
-# Old L0 Z+X no longer produces parentheses; Enter remains comma+period.
-event(True, 20, 10)
-event(True, 21, 40)
-event(False, 20, 10)
-event(False, 21, 300)
-expected.extend(((0x1D, 0), (0x1B, 0)))
+# Enter remains comma+period.
 event(True, 27, 10)
 event(True, 28, 40)
 event(False, 27, 10)

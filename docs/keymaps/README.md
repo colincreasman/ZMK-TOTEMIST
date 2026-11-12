@@ -13,7 +13,7 @@ quote on M.
   or [keymap source](experiment-v1.keymap).
 - **v2:** On every layer, `C+V` and `M+,` give `(` and `)`;
   `D+F` and `J+K` give `[` and `]`; `E+R` and `U+I` give `{` and `}`.
-  `A+S`, `L+\`, `Z+A`, and `.+/` give `-`, `=`, `_`, and `+`.
+  `A+S`, `L+\`, `Z+X`, and `.+/` give `_`, `+`, `-`, and `=`.
   These symbol combos ignore held Shift, so their output never changes with
   Shift. `,+.` still gives Enter.
   Key names refer to physical L0 positions. Combos have a 25ms timeout.
