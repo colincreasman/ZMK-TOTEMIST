@@ -4,6 +4,8 @@ manifest:
       url-base: https://github.com/zmkfirmware
     - name: englmaxi
       url-base: https://github.com/englmaxi
+    - name: urob
+      url-base: https://github.com/urob
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -13,5 +15,30 @@ manifest:
     - name: zmk-dongle-display
       remote: englmaxi
       revision: v0.3
+    # urob's modules used by his keymap, on their ZMK v0.3 tags.
+    - name: zmk-adaptive-key
+      remote: urob
+      revision: v0.3
+      path: modules/zmk/adaptive-key
+    - name: zmk-auto-layer
+      remote: urob
+      revision: v0.3
+      path: modules/zmk/auto-layer
+    - name: zmk-helpers
+      remote: urob
+      revision: v0.3
+      path: modules/zmk/helpers
+    - name: zmk-leader-key
+      remote: urob
+      revision: v0.3
+      path: modules/zmk/leader-key
+    - name: zmk-tri-state
+      remote: urob
+      revision: v0.3
+      path: modules/zmk/tri-state
+    - name: zmk-unicode
+      remote: urob
+      revision: v0.3
+      path: modules/zmk/unicode
   self:
     path: config
