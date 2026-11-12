@@ -63,11 +63,11 @@ layers:
   - type: trans
   - PgUp
   - t: Bspc
-    h: Ctl+Bspc
+    h: Del Word
   - t: ↑
-    h: Ctl+Home
+    h: Doc Start
   - t: Del
-    h: Ctl+Del
+    h: Del Word
   - type: trans
   - t: Gui
     h: sticky
@@ -80,11 +80,11 @@ layers:
   - type: trans
   - PgDn
   - t: ←
-    h: Home
+    h: Line Start
   - t: ↓
-    h: Ctl+End
+    h: Doc End
   - t: →
-    h: End
+    h: Line End
   - Enter
   - type: trans
   - type: trans
@@ -123,11 +123,11 @@ layers:
     h: Ctrl
   - type: trans
   - type: trans
-  - t: PDesk
+  - t: Prev Desk
     h: Ctrl
   - t: $$mdi:volume-medium$$
     h: Shift
-  - t: NDesk
+  - t: Next Desk
     h: Alt
   - type: trans
   - F10
@@ -135,9 +135,9 @@ layers:
   - F2
   - F3
   - type: trans
-  - PinA.
-  - PinW.
-  - Alt+`
+  - ''
+  - ''
+  - Overview
   - type: trans
   - type: trans
   - Gui
@@ -187,43 +187,6 @@ layers:
   - type: held
   - type: trans
   - Smart Mouse
-  Sys:
-  - BT 1
-  - BT 2
-  - BT 3
-  - BT 4
-  - BT CLR
-  - type: trans
-  - type: trans
-  - type: trans
-  - type: trans
-  - type: trans
-  - type: trans
-  - type: trans
-  - type: trans
-  - type: trans
-  - Boot
-  - Boot
-  - type: trans
-  - type: trans
-  - type: trans
-  - type: trans
-  - type: trans
-  - type: trans
-  - type: trans
-  - type: trans
-  - Reset
-  - Reset
-  - type: trans
-  - type: trans
-  - type: trans
-  - type: trans
-  - Gui
-  - type: trans
-  - type: held
-  - type: held
-  - type: trans
-  - Smart Mouse
   Mouse:
   - type: trans
   - type: trans
@@ -261,6 +224,45 @@ layers:
   - Scroll ↑
   - Scroll ↓
   - Smart Mouse
+  Sys:
+  - t: Boot L
+    h: Hold 2s
+  - Win
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - t: Boot R
+    h: Hold 2s
+  - BT 1
+  - BT 2
+  - BT 3
+  - BT 4
+  - ''
+  - ''
+  - ''
+  - BT CLR
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - macOS
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - type: trans
+  - type: trans
+  - ''
+  - ''
   Combos:
   - ''
   - ''

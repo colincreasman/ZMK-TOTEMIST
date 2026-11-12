@@ -1,9 +1,5 @@
 # keymap-drawer config, copied from urob/zmk-config draw/config.yaml.
-# From a ZMK workspace with the modules checked out (west update):
-#   keymap -c docs/keymap-drawer.yaml parse -z config/totem.keymap --virtual-layers Combos > docs/keymap.yaml
-#   then set `layout: {qmk_keyboard: crkbd/rev1, layout_name: LAYOUT_split_3x5_3}` and every combo's
-#   `l: [Combos]` in docs/keymap.yaml, and run:
-#   keymap -c docs/keymap-drawer.yaml draw docs/keymap.yaml > docs/keymap.svg
+# Regenerate YAML, SVG and PNG with scripts/draw_keymap.py (see README).
 parse_config:
   zmk_additional_includes:
     - "modules/zmk/helpers/include"
@@ -18,21 +14,31 @@ parse_config:
     "&sys_reset": Reset
     "&bootloader": Boot
     "&caps_word": Caps Word
-    "&kp LA(F4)": Close
+    "&os_close": Close
+    "&os_copy": Copy
+    "&os_cut": Cut
+    "&os_paste": Paste
+    "&os_next_window": NWin
+    "&os_prev_window": PWin
+    "&os_overview": Overview
+    "&desktop_prev LCTRL 0": {t: Prev Desk, h: Ctrl}
+    "&desktop_next LALT 0": {t: Next Desk, h: Alt}
+    "&os_nav_up": {t: "↑", h: Doc Start}
+    "&os_nav_down": {t: "↓", h: Doc End}
+    "&os_nav_bspc": {t: Bspc, h: Del Word}
+    "&os_nav_del": {t: Del, h: Del Word}
+    "&os_mode 0": macOS
+    "&os_mode 1": Win
+    "&bhold_left": {t: Boot L, h: Hold 2s}
+    "&bhold_right": {t: Boot R, h: Hold 2s}
+    "&mt_home 0 LEFT": {t: "←", h: Line Start}
+    "&mt_end 0 RIGHT": {t: "→", h: Line End}
+    "&mo 5": {t: Sys, h: Hold}
 
     "&bt BT_SEL 0": BT 1
     "&bt BT_SEL 1": BT 2
     "&bt BT_SEL 2": BT 3
     "&bt BT_SEL 3": BT 4
-
-    "&kp LC(INS)": Copy
-    "&kp LC(X)": Cut
-    "&kp LS(INS)": Paste
-
-    "&kp LG(LC(LEFT))": PDesk
-    "&kp LG(LC(RIGHT))": NDesk
-    "&kp LG(LC(LS(A)))": PinA.
-    "&kp LG(LC(LS(Q)))": PinW.
 
     "&swapper": NWin
     "&kp LS(TAB)": PWin
@@ -68,6 +74,7 @@ parse_config:
   trans_legend: { "t": "", "type": "trans" }
 
   zmk_combos:
+    combo_maintenance_layer: {hidden: true}
     combo_cut: { align: bottom, o: 0.15 }
     combo_ldrsh: { align: top, o: 1.35 }
 
