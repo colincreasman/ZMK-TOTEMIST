@@ -1,0 +1,70 @@
+#include <dt-bindings/zmk/keys.h>
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/kscan_mock.h>
+
+&lt {
+    flavor = "balanced";
+    tapping-term-ms = <175>;
+    quick-tap-ms = <125>;
+};
+
+/ {
+    behaviors {
+        ht: hold_tap {
+            label = "hold_tap";
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <175>;
+            quick-tap-ms = <125>;
+            bindings = <&kp>, <&kp>;
+        };
+    };
+    keymap {
+        compatible = "zmk,keymap";
+        default_layer {
+            bindings = <
+                &lt 1 RET      &kp A  &kp LSHFT
+                &ht RGUI SEMI  &kp C  &ht LGUI SQT
+            >;
+        };
+        num_layer {
+            bindings = <
+                &trans  &kp N1  &trans
+                &trans  &trans  &ht LGUI GRAVE
+            >;
+        };
+    };
+};
+
+&kscan {
+    rows = <2>;
+    columns = <3>;
+    events = <
+        // Enter tap; holding the same key activates the number layer.
+        ZMK_MOCK_PRESS(0,0,40) ZMK_MOCK_RELEASE(0,0,300)
+        ZMK_MOCK_PRESS(0,0,40) ZMK_MOCK_PRESS(0,1,40)
+        ZMK_MOCK_RELEASE(0,1,10) ZMK_MOCK_RELEASE(0,0,300)
+
+        // Semicolon tap; holding the same key produces GUI+C.
+        ZMK_MOCK_PRESS(1,0,40) ZMK_MOCK_RELEASE(1,0,300)
+        ZMK_MOCK_PRESS(1,0,40) ZMK_MOCK_PRESS(1,1,40)
+        ZMK_MOCK_RELEASE(1,1,10) ZMK_MOCK_RELEASE(1,0,100)
+
+        // Quote and Shift+quote on L0.
+        ZMK_MOCK_PRESS(1,2,40) ZMK_MOCK_RELEASE(1,2,300)
+        ZMK_MOCK_PRESS(0,2,30)
+        ZMK_MOCK_PRESS(1,2,40) ZMK_MOCK_RELEASE(1,2,30)
+        ZMK_MOCK_RELEASE(0,2,300)
+
+        // L1 grave and Shift+grave, plus the same GUI hold.
+        ZMK_MOCK_PRESS(0,0,220)
+        ZMK_MOCK_PRESS(1,2,40) ZMK_MOCK_RELEASE(1,2,300)
+        ZMK_MOCK_PRESS(0,2,30)
+        ZMK_MOCK_PRESS(1,2,40) ZMK_MOCK_RELEASE(1,2,30)
+        ZMK_MOCK_RELEASE(0,2,300)
+        ZMK_MOCK_PRESS(1,2,40) ZMK_MOCK_PRESS(1,1,40)
+        ZMK_MOCK_RELEASE(1,1,10) ZMK_MOCK_RELEASE(1,2,30)
+        ZMK_MOCK_RELEASE(0,0,100)
+    >;
+};

@@ -1,73 +1,141 @@
 #include <dt-bindings/zmk/keys.h>
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/kscan_mock.h>
+#include <dt-bindings/zmk/modifiers.h>
 
 / {
     behaviors {
-        tab_caps_dance: tab_caps_dance {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&kp TAB>, <&caps_word>;
-        };
-        tab_shift: tab_shift {
+        ht: hold_tap {
+            label = "hold_tap";
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
             tapping-term-ms = <175>;
             quick-tap-ms = <125>;
-            bindings = <&kp>, <&tab_caps_dance>;
+            bindings = <&kp>, <&kp>;
+        };
+        a_caps_dance: a_caps_dance {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp A>, <&caps_word>;
+        };
+        backslash_caps_dance: backslash_caps_dance {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp BSLH>, <&caps_word>;
+        };
+        a_tap: a_tap {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&a_caps_dance>, <&kp A>;
+            mods = <(MOD_LSFT | MOD_RSFT)>;
+            keep-mods = <(MOD_LSFT | MOD_RSFT)>;
+        };
+        backslash_tap: backslash_tap {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&backslash_caps_dance>, <&kp BSLH>;
+            mods = <(MOD_LSFT | MOD_RSFT)>;
+            keep-mods = <(MOD_LSFT | MOD_RSFT)>;
+        };
+        shift_a: shift_a {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <190>;
+            quick-tap-ms = <120>;
+            require-prior-idle-ms = <100>;
+            bindings = <&kp>, <&a_tap>;
+        };
+        shift_backslash: shift_backslash {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <190>;
+            quick-tap-ms = <120>;
+            require-prior-idle-ms = <100>;
+            bindings = <&kp>, <&backslash_tap>;
         };
     };
     keymap {
         compatible = "zmk,keymap";
         default_layer {
             bindings = <
-                &tab_shift LSHFT 0  &kp A     &kp BSPC
-                &kp SPACE           &kp RET   &kp B
+                &ht LSHFT TAB &shift_a LSHFT 0 &shift_backslash RSHFT 0
+                &kp X         &kp SPACE        &kp RET
+                &kp T         &none            &none
             >;
         };
     };
 };
 
 &kscan {
-    rows = <2>;
+    rows = <3>;
     columns = <3>;
     events = <
-        // Single Tab, then a quick Shift chord.
-        ZMK_MOCK_PRESS(0,0,40) ZMK_MOCK_RELEASE(0,0,300)
-        ZMK_MOCK_PRESS(0,1,10) ZMK_MOCK_RELEASE(0,1,300)
-        ZMK_MOCK_PRESS(0,0,40) ZMK_MOCK_PRESS(0,1,40)
+        // Rapid Tab taps remain individual Tabs and do not enable Caps Word.
+        ZMK_MOCK_PRESS(0,0,30) ZMK_MOCK_RELEASE(0,0,30)
+        ZMK_MOCK_PRESS(0,0,30) ZMK_MOCK_RELEASE(0,0,30)
+        ZMK_MOCK_PRESS(0,0,30) ZMK_MOCK_RELEASE(0,0,30)
+        ZMK_MOCK_PRESS(1,0,20) ZMK_MOCK_RELEASE(1,0,300)
+
+        // The Tab thumb still holds Shift.
+        ZMK_MOCK_PRESS(0,0,40) ZMK_MOCK_PRESS(1,0,40)
+        ZMK_MOCK_RELEASE(1,0,10) ZMK_MOCK_RELEASE(0,0,300)
+
+        // Single taps retain A and backslash.
+        ZMK_MOCK_PRESS(0,1,40) ZMK_MOCK_RELEASE(0,1,300)
+        ZMK_MOCK_PRESS(0,2,40) ZMK_MOCK_RELEASE(0,2,300)
+
+        // Each outer home-row key enables Caps Word on a double tap.
+        ZMK_MOCK_PRESS(0,1,40) ZMK_MOCK_RELEASE(0,1,50)
+        ZMK_MOCK_PRESS(0,1,40) ZMK_MOCK_RELEASE(0,1,40)
+        ZMK_MOCK_PRESS(1,0,20) ZMK_MOCK_RELEASE(1,0,20)
+        ZMK_MOCK_PRESS(1,1,20) ZMK_MOCK_RELEASE(1,1,300)
+        ZMK_MOCK_PRESS(0,2,40) ZMK_MOCK_RELEASE(0,2,50)
+        ZMK_MOCK_PRESS(0,2,40) ZMK_MOCK_RELEASE(0,2,40)
+        ZMK_MOCK_PRESS(1,0,20) ZMK_MOCK_RELEASE(1,0,20)
+        ZMK_MOCK_PRESS(1,1,20) ZMK_MOCK_RELEASE(1,1,300)
+
+        // Both home-row keys still hold their respective Shift modifiers.
+        ZMK_MOCK_PRESS(0,1,40) ZMK_MOCK_PRESS(1,0,40)
+        ZMK_MOCK_RELEASE(1,0,10) ZMK_MOCK_RELEASE(0,1,300)
+        ZMK_MOCK_PRESS(0,2,40) ZMK_MOCK_PRESS(1,0,40)
+        ZMK_MOCK_RELEASE(1,0,10) ZMK_MOCK_RELEASE(0,2,300)
+
+        // A fast A-X roll stays in order and does not become Shift or Caps Word.
+        ZMK_MOCK_PRESS(0,1,20) ZMK_MOCK_RELEASE(0,1,20)
+        ZMK_MOCK_PRESS(1,0,20) ZMK_MOCK_RELEASE(1,0,300)
+
+        // Tab ends Caps Word without reactivating it.
+        ZMK_MOCK_PRESS(0,1,40) ZMK_MOCK_RELEASE(0,1,50)
+        ZMK_MOCK_PRESS(0,1,40) ZMK_MOCK_RELEASE(0,1,300)
+        ZMK_MOCK_PRESS(0,0,30) ZMK_MOCK_RELEASE(0,0,30)
+        ZMK_MOCK_PRESS(0,0,30) ZMK_MOCK_RELEASE(0,0,30)
+        ZMK_MOCK_PRESS(1,0,20) ZMK_MOCK_RELEASE(1,0,300)
+
+        // Double-tapping either home-row key again toggles Caps Word off.
+        ZMK_MOCK_PRESS(0,1,40) ZMK_MOCK_RELEASE(0,1,50)
+        ZMK_MOCK_PRESS(0,1,40) ZMK_MOCK_RELEASE(0,1,300)
+        ZMK_MOCK_PRESS(0,2,40) ZMK_MOCK_RELEASE(0,2,50)
+        ZMK_MOCK_PRESS(0,2,40) ZMK_MOCK_RELEASE(0,2,40)
+        ZMK_MOCK_PRESS(1,0,20) ZMK_MOCK_RELEASE(1,0,300)
+
+        // After typing, fast thumb Shift+A must emit A before Shift releases.
+        ZMK_MOCK_PRESS(1,0,20) ZMK_MOCK_RELEASE(1,0,10)
+        ZMK_MOCK_PRESS(0,0,20) ZMK_MOCK_PRESS(0,1,30)
         ZMK_MOCK_RELEASE(0,1,10) ZMK_MOCK_RELEASE(0,0,300)
 
-        // Caps Word survives Backspace, but ends at Space.
-        ZMK_MOCK_PRESS(0,0,40) ZMK_MOCK_RELEASE(0,0,50)
-        ZMK_MOCK_PRESS(0,0,40) ZMK_MOCK_RELEASE(0,0,40)
-        ZMK_MOCK_PRESS(0,1,10) ZMK_MOCK_RELEASE(0,1,10)
-        ZMK_MOCK_PRESS(0,2,10) ZMK_MOCK_RELEASE(0,2,10)
-        ZMK_MOCK_PRESS(1,2,10) ZMK_MOCK_RELEASE(1,2,10)
-        ZMK_MOCK_PRESS(1,0,10) ZMK_MOCK_RELEASE(1,0,10)
-        ZMK_MOCK_PRESS(0,1,10) ZMK_MOCK_RELEASE(0,1,300)
+        // The same timing with T is the control case.
+        ZMK_MOCK_PRESS(1,0,20) ZMK_MOCK_RELEASE(1,0,10)
+        ZMK_MOCK_PRESS(0,0,20) ZMK_MOCK_PRESS(2,0,30)
+        ZMK_MOCK_RELEASE(2,0,10) ZMK_MOCK_RELEASE(0,0,300)
 
-        // Enter also ends Caps Word.
-        ZMK_MOCK_PRESS(0,0,40) ZMK_MOCK_RELEASE(0,0,50)
-        ZMK_MOCK_PRESS(0,0,40) ZMK_MOCK_RELEASE(0,0,40)
-        ZMK_MOCK_PRESS(0,1,10) ZMK_MOCK_RELEASE(0,1,10)
-        ZMK_MOCK_PRESS(1,1,10) ZMK_MOCK_RELEASE(1,1,10)
-        ZMK_MOCK_PRESS(0,1,10) ZMK_MOCK_RELEASE(0,1,300)
-
-        // A single Tab ends Caps Word.
-        ZMK_MOCK_PRESS(0,0,40) ZMK_MOCK_RELEASE(0,0,50)
-        ZMK_MOCK_PRESS(0,0,40) ZMK_MOCK_RELEASE(0,0,40)
-        ZMK_MOCK_PRESS(0,1,10) ZMK_MOCK_RELEASE(0,1,300)
-        ZMK_MOCK_PRESS(0,0,40) ZMK_MOCK_RELEASE(0,0,300)
-        ZMK_MOCK_PRESS(1,2,10) ZMK_MOCK_RELEASE(1,2,300)
-
-        // A second double-tap toggles Caps Word off.
-        ZMK_MOCK_PRESS(0,0,40) ZMK_MOCK_RELEASE(0,0,50)
-        ZMK_MOCK_PRESS(0,0,40) ZMK_MOCK_RELEASE(0,0,300)
-        ZMK_MOCK_PRESS(0,0,40) ZMK_MOCK_RELEASE(0,0,50)
-        ZMK_MOCK_PRESS(0,0,40) ZMK_MOCK_RELEASE(0,0,40)
-        ZMK_MOCK_PRESS(0,1,10) ZMK_MOCK_RELEASE(0,1,100)
+        // Backslash has the same Caps Word dance and must also stay shifted.
+        ZMK_MOCK_PRESS(1,0,20) ZMK_MOCK_RELEASE(1,0,10)
+        ZMK_MOCK_PRESS(0,0,20) ZMK_MOCK_PRESS(0,2,30)
+        ZMK_MOCK_RELEASE(0,2,10) ZMK_MOCK_RELEASE(0,0,300)
     >;
 };
