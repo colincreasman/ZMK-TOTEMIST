@@ -145,6 +145,19 @@
             key-positions = <0 1>;  // Combo q+w for ESCAPE
             bindings = <&kp ESC>;
         };
+        combo_enter_zx {
+            timeout-ms = <25>;
+            key-positions = <20 21>;
+            bindings = <&kp RET>;
+            layers = <L0>;
+        };
+        // The usual dot+slash combo includes the dead position 29.
+        combo_enter_comma_dot {
+            timeout-ms = <25>;
+            key-positions = <27 28>;
+            bindings = <&kp RET>;
+            layers = <L0>;
+        };
         combo_maintenance_layer {
             timeout-ms = <100>;
             key-positions = <30 35>;
@@ -158,7 +171,7 @@
         compatible = "zmk,keymap";
 
         // Position 29 is dead in hardware. Keep slash on the working right
-        // home-row pinky and put Enter on L1+A and backslash on L1+slash.
+        // home-row pinky and put underscore on L1+A and backslash on L1+slash.
         layer_zero {
             display-name = "ABC";
             bindings = <
@@ -181,7 +194,7 @@
         //             ╭───────────┬───────────┬───────────┬───────────┬───────────╮   ╭───────────┬───────────┬───────────┬───────────┬───────────╮
                        &kp N1      &kp N2      &kp N3      &kp N4      &kp N5          &kp N6      &kp N7      &kp N8      &kp N9      &kp N0
         //             ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
-                       &kp RET     &trans      &trans      &trans      &kp EQUAL       &kp LEFT    &kp DOWN    &kp UP      &kp RIGHT   &ht RSHFT BSLH
+                       &kp UNDER   &trans      &trans      &trans      &kp EQUAL       &kp LEFT    &kp DOWN    &kp UP      &kp RIGHT   &ht RSHFT BSLH
         //             ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
                        &kp LPAR    &kp RPAR    &kp LBRC    &kp RBRC    &kp QMARK       &kp SEMI    &kp SQT     &kp LBKT    &kp RBKT    &none
         //             ╰───────────┴───────────┴───────────├───────────├───────────┤   ├───────────├───────────├───────────┴───────────┴───────────╯
