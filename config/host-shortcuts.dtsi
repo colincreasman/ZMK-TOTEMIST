@@ -1,0 +1,43 @@
+// Reuse Toucan's persisted per-host OS selection. Bindings are Mac, Windows.
+#define OS_SELECT(NAME, MAC, WIN)                                            \
+  / { behaviors { NAME: NAME {                                               \
+    compatible = "zmk,behavior-os-select";                                   \
+    #binding-cells = <0>; bindings = <MAC>, <WIN>;                            \
+  }; }; };
+
+/ {
+  behaviors {
+    os_mode: os_mode {
+      compatible = "zmk,behavior-os-mode";
+      #binding-cells = <1>;
+    };
+  };
+};
+
+OS_SELECT(os_copy, &kp LG(C), &kp LC(C))
+OS_SELECT(os_cut, &kp LG(X), &kp LC(X))
+OS_SELECT(os_paste, &kp LG(V), &kp LC(V))
+OS_SELECT(os_close, &kp LG(W), &kp LC(W))
+
+// Mac window cycling matches Toucan's current Cmd+[Shift]+grave shortcuts.
+OS_SELECT(os_next_window, &kp LG(GRAVE), &swapper)
+OS_SELECT(os_prev_window, &kp LG(LS(GRAVE)), &kp LA(LS(TAB)))
+OS_SELECT(os_prev_desktop, &kp LC(LEFT), &kp LG(LC(LEFT)))
+OS_SELECT(os_next_desktop, &kp LC(RIGHT), &kp LG(LC(RIGHT)))
+OS_SELECT(os_overview, &kp LA(GRAVE), &kp LG(TAB))
+
+// Set the Unicode input method for this host before emitting either case.
+OS_SELECT(os_unicode_mode, &uc UC_SET_MACOS, &uc UC_SET_WIN_COMPOSE)
+ZMK_MACRO_TWO_PARAM(uc_host, wait-ms = <0>; tap-ms = <0>;
+  bindings = <&os_unicode_mode>,
+             <&macro_param_1to1>, <&macro_param_2to2>, <&uc 0 0>;)
+
+OS_SELECT(os_home, &kp LG(LEFT), &kp HOME)
+OS_SELECT(os_end, &kp LG(RIGHT), &kp END)
+OS_SELECT(os_nav_up, &mt LG(UP) UP, &mt LC(HOME) UP)
+OS_SELECT(os_nav_down, &mt LG(DOWN) DOWN, &mt LC(END) DOWN)
+OS_SELECT(os_nav_bspc, &mt LA(BSPC) BSPC, &mt LC(BSPC) BSPC)
+OS_SELECT(os_nav_del, &mt LA(DEL) DEL, &mt LC(DEL) DEL)
+
+MAKE_HRM(desktop_prev, &kp, &os_prev_desktop, KEYS_L THUMBS)
+MAKE_HRM(desktop_next, &kp, &os_next_desktop, KEYS_L THUMBS)

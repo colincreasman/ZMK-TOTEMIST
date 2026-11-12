@@ -1,3 +1,26 @@
 config ZMK_BEHAVIOR_LONG_PRESS
     bool "Long-press behavior"
     default y
+
+DT_COMPAT_ZMK_BEHAVIOR_OS_SELECT := zmk,behavior-os-select
+DT_COMPAT_ZMK_BEHAVIOR_OS_MODE := zmk,behavior-os-mode
+
+config ZMK_BEHAVIOR_OS_SELECT
+    bool "Host OS shortcut selection"
+    default $(dt_compat_enabled,$(DT_COMPAT_ZMK_BEHAVIOR_OS_SELECT))
+    select TOUCAN_OS_MODE
+
+config ZMK_BEHAVIOR_OS_MODE
+    bool "Host OS mode selection"
+    default $(dt_compat_enabled,$(DT_COMPAT_ZMK_BEHAVIOR_OS_MODE))
+    select TOUCAN_OS_MODE
+
+config TOUCAN_OS_MODE
+    bool
+    help
+      Toucan's persisted mode table: USB and each Bluetooth profile remember
+      their own Mac/Windows shortcut selection. Defaults to macOS.
+
+config TOUCAN_OS_MODE_DEFAULT_WIN
+    bool "Default to Windows shortcuts"
+    depends on TOUCAN_OS_MODE

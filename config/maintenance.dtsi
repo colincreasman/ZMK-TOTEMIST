@@ -1,0 +1,34 @@
+/ {
+  behaviors {
+    bhold_left: bootloader_hold_left {
+      compatible = "zmk,behavior-long-press";
+      #binding-cells = <0>;
+      duration-ms = <2000>;
+      bindings = <&bootloader>;
+    };
+    bhold_right: bootloader_hold_right {
+      compatible = "zmk,behavior-long-press";
+      #binding-cells = <0>;
+      duration-ms = <2000>;
+      bindings = <&bootloader>;
+    };
+  };
+
+  combos {
+    combo_maintenance_layer {
+      timeout-ms = <100>;
+      key-positions = <LH2 RH2>;
+      bindings = <&mo SYS>;
+      layers = <DEF NAV FN NUM MOUSE>;
+    };
+  };
+};
+
+// Toucan's inner 36 positions, without the dongle-only T hold.
+ZMK_LAYER(Sys,
+  &bhold_left &os_mode 1 XXX XXX XXX      XXX XXX XXX XXX &bhold_right
+  &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 XXX
+                                        XXX XXX &bt BT_CLR XXX XXX
+  XXX XXX XXX XXX XXX                    XXX &os_mode 0 XXX XXX XXX
+              XXX XXX ___              ___ XXX XXX
+)
