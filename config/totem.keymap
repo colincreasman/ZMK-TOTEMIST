@@ -2,7 +2,10 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/outputs.h>
-#include <dt-bindings/zmk/modifiers.h>
+
+// Home row mods macro
+#define HRML(k1,k2,k3,k4) &hml LSHFT k1 &hml LCTRL k2  &hml LALT k3  &hml LGUI k4
+#define HRMR(k1,k2,k3,k4) &hmr RGUI k1  &hmr RALT k2  &hmr RCTRL k3  &hmr RSHFT k4
 
 // Key positions for positional hold-tap, kept for reference. Currently unused:
 // the homerow mods below deliberately do NOT use cross-hand gating (see the
@@ -13,6 +16,8 @@
 //   Row 1:    10 11 12 13 14  | 15 16 17 18 19
 //   Row 2:    20 21 22 23 24  | 25 26 27 28 29
 //   Thumbs:      30 31 32     | 33 34 35
+// The keymap mirrors the Toucan2's, minus its outer pinky columns and
+// trackpad layer.
 #define KEYS_L 0 1 2 3 4 10 11 12 13 14 20 21 22 23 24   // left-hand keys
 #define KEYS_R 5 6 7 8 9 15 16 17 18 19 25 26 27 28 29   // right-hand keys
 #define THUMBS 30 31 32 33 34 35                         // thumb keys
@@ -38,7 +43,8 @@
 
 / {
     behaviors {
-        // Quote/GUI and Tab/Shift on the left; semicolon/GUI on the right.
+        // Thumb hold-tap: quote/Cmd on the left outer thumb and
+        // semicolon/Cmd on the right outer thumb.
         //
         // Deliberately has NO `global-quick-tap` / `require-prior-idle-ms`.
         // Those make ZMK resolve the key to an *instant tap* whenever any other
@@ -65,127 +71,119 @@
             tapping-term-ms = <200>;
             bindings = <&kp A>, <&caps_word>;
         };
-        backslash_caps_dance: backslash_caps_dance {
+
+        bslash_caps_dance: bslash_caps_dance {
             compatible = "zmk,behavior-tap-dance";
             #binding-cells = <0>;
             tapping-term-ms = <200>;
             bindings = <&kp BSLH>, <&caps_word>;
         };
-        // Shift chords must emit before Shift releases, not wait for a second tap.
-        a_tap: a_tap {
-            compatible = "zmk,behavior-mod-morph";
-            #binding-cells = <0>;
-            bindings = <&a_caps_dance>, <&kp A>;
-            mods = <(MOD_LSFT | MOD_RSFT)>;
-            keep-mods = <(MOD_LSFT | MOD_RSFT)>;
-        };
-        backslash_tap: backslash_tap {
-            compatible = "zmk,behavior-mod-morph";
-            #binding-cells = <0>;
-            bindings = <&backslash_caps_dance>, <&kp BSLH>;
-            mods = <(MOD_LSFT | MOD_RSFT)>;
-            keep-mods = <(MOD_LSFT | MOD_RSFT)>;
-        };
-        shift_a: shift_a {
+
+        a_shift: a_shift {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
             tapping-term-ms = <190>;
             quick-tap-ms = <120>;
             require-prior-idle-ms = <100>;
-            bindings = <&kp>, <&a_tap>;
-        };
-        shift_backslash: shift_backslash {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            flavor = "balanced";
-            tapping-term-ms = <190>;
-            quick-tap-ms = <120>;
-            require-prior-idle-ms = <100>;
-            bindings = <&kp>, <&backslash_tap>;
+            bindings = <&kp>, <&a_caps_dance>;
         };
 
-        // Mask held Shift, then apply only the symbol's own implicit Shift.
-        open_paren: open_paren {
+        bslash_shift: bslash_shift {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <190>;
+            quick-tap-ms = <120>;
+            require-prior-idle-ms = <100>;
+            bindings = <&kp>, <&bslash_caps_dance>;
+        };
+
+        // These symbol combos keep their output unchanged while Shift is held.
+        lpar_fixed: lpar_fixed {
             compatible = "zmk,behavior-mod-morph";
             #binding-cells = <0>;
             bindings = <&kp LPAR>, <&kp LPAR>;
-            mods = <(MOD_LSFT | MOD_RSFT)>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
         };
-        close_paren: close_paren {
+        rpar_fixed: rpar_fixed {
             compatible = "zmk,behavior-mod-morph";
             #binding-cells = <0>;
             bindings = <&kp RPAR>, <&kp RPAR>;
-            mods = <(MOD_LSFT | MOD_RSFT)>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
         };
-        open_bracket: open_bracket {
+        lbkt_fixed: lbkt_fixed {
             compatible = "zmk,behavior-mod-morph";
             #binding-cells = <0>;
             bindings = <&kp LBKT>, <&kp LBKT>;
-            mods = <(MOD_LSFT | MOD_RSFT)>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
         };
-        close_bracket: close_bracket {
+        rbkt_fixed: rbkt_fixed {
             compatible = "zmk,behavior-mod-morph";
             #binding-cells = <0>;
             bindings = <&kp RBKT>, <&kp RBKT>;
-            mods = <(MOD_LSFT | MOD_RSFT)>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
         };
-        open_brace: open_brace {
+        lbrc_fixed: lbrc_fixed {
             compatible = "zmk,behavior-mod-morph";
             #binding-cells = <0>;
             bindings = <&kp LBRC>, <&kp LBRC>;
-            mods = <(MOD_LSFT | MOD_RSFT)>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
         };
-        close_brace: close_brace {
+        rbrc_fixed: rbrc_fixed {
             compatible = "zmk,behavior-mod-morph";
             #binding-cells = <0>;
             bindings = <&kp RBRC>, <&kp RBRC>;
-            mods = <(MOD_LSFT | MOD_RSFT)>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
         };
-        fixed_minus: fixed_minus {
+        minus_fixed: minus_fixed {
             compatible = "zmk,behavior-mod-morph";
             #binding-cells = <0>;
             bindings = <&kp MINUS>, <&kp MINUS>;
-            mods = <(MOD_LSFT | MOD_RSFT)>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
         };
-        fixed_equal: fixed_equal {
+        equal_fixed: equal_fixed {
             compatible = "zmk,behavior-mod-morph";
             #binding-cells = <0>;
             bindings = <&kp EQUAL>, <&kp EQUAL>;
-            mods = <(MOD_LSFT | MOD_RSFT)>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
         };
-        fixed_under: fixed_under {
+        under_fixed: under_fixed {
             compatible = "zmk,behavior-mod-morph";
             #binding-cells = <0>;
             bindings = <&kp UNDER>, <&kp UNDER>;
-            mods = <(MOD_LSFT | MOD_RSFT)>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
         };
-        fixed_plus: fixed_plus {
+        plus_fixed: plus_fixed {
             compatible = "zmk,behavior-mod-morph";
             #binding-cells = <0>;
             bindings = <&kp PLUS>, <&kp PLUS>;
-            mods = <(MOD_LSFT | MOD_RSFT)>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
         };
 
         // Homerow mods.
         //
-        // Match Toucan's balanced HRMs and prior-idle gate.
-        //
         // NOTE: no `hold-trigger-key-positions` / `hold-trigger-on-release`.
         // Those implement urob's cross-hand ("timeless") positional hold-tap,
         // where a homerow mod can ONLY resolve as a hold if the next key is on
-        // the opposite half. That gate has no timeout escape hatch: holding
-        // LGUI (F) and pressing C -- both left hand -- can never become a hold,
-        // so it emits "fc" no matter how long F is held. That breaks the entire
+        // the opposite half. That gate is absolute -- there is no timeout
+        // escape hatch -- so holding LGUI (F) and pressing C, both left hand,
+        // can never become a hold and just emits "fc". That breaks the whole
         // left-hand shortcut cluster (CMD/CTRL + Q W A S Z X C V) and every
-        // left-hand capital via LSHFT on A, which is why the left half felt far
-        // worse than the right.
+        // left-hand capital via LSHFT on A.
         //
-        // Trade-off: without positional gating, a fast same-hand roll starting
-        // on the homerow ("as", "sad", "fad") can register a mod if it begins
-        // after >100ms of idle time. If that becomes the more annoying failure
-        // mode, re-add the two properties below (KEYS_R THUMBS for hml,
-        // KEYS_L THUMBS for hmr) and use combos for same-hand shortcuts.
+        // With the positional gate removed, `require-prior-idle-ms` is the
+        // main guard against false mods mid-word, and the tapping term becomes
+        // the window in which a same-hand roll could still resolve as a hold
+        // (balanced resolves on the other key's release). 190ms with a 100ms
+        // prior-idle (was 220/150) biases toward HOLD, since missed holds
+        // proved far more common than false ones.
+        //
+        // Trade-off: a fast same-hand roll that *starts* on the homerow after
+        // >100ms idle ("as", "sad", "fad") can register a mod. If that becomes
+        // the more annoying failure mode, re-add the two properties below
+        // (KEYS_R THUMBS for hml, KEYS_L THUMBS for hmr) and use combos for
+        // same-hand shortcuts, which is how urob handles it.
         hml: home_row_mod_left {
             label = "hrm_left";
             compatible = "zmk,behavior-hold-tap";
@@ -219,7 +217,20 @@
             bindings = <&kp>, <&kp>;
         };
 
+        // Software bootloader entry for the maintenance layer. This uses a
+        // dedicated long-press behavior instead of `zmk,behavior-hold-tap`.
+        // Both inner thumbs are hold-tap keys, and ZMK v0.3 rejects a second
+        // hold-tap while either thumb remains held. Tap does nothing; a 2s+
+        // hold invokes `&bootloader` with the original key's split source.
+        //
+        // This exists because ZMK behaviors with BEHAVIOR_LOCALITY_EVENT_SOURCE
+        // (which &bootloader uses) execute on whichever half the triggering
+        // key physically lives on, even though all keymap/behavior logic runs
+        // on the central (left) half -- so P, physically on the
+        // right board, reliably bootloaders the right half over BLE even
+        // when its physical reset button doesn't.
         bhold: bootloader_hold {
+            label = "bootloader_hold";
             compatible = "zmk,behavior-long-press";
             #binding-cells = <0>;
             duration-ms = <2000>;
@@ -227,9 +238,10 @@
         };
 
         // Same 2s hold, retargeted at the split central via `central`. In
-        // dongle mode that is the keyless USB dongle, which otherwise can only
-        // reach its UF2 bootloader by opening its case. Standalone, the central
-        // is the left half, so this just duplicates the left pinky hold.
+        // dongle mode that is the keyless dongle, which otherwise has no way
+        // into its UF2 bootloader short of opening its case to reach the reset
+        // button. Standalone, the central is the left half, so this simply
+        // duplicates the left pinky hold.
         bhold_dongle: bootloader_hold_dongle {
             compatible = "zmk,behavior-long-press";
             #binding-cells = <0>;
@@ -237,7 +249,10 @@
             bindings = <&bootloader>;
             central;
         };
-
+        // `&kp` that drops the key while Ctrl, Shift, Alt and GUI are all
+        // held. Resting on the four left homerow mods resolves them all as
+        // holds, and with `.` that is macOS's sysdiagnose chord, which kept
+        // firing by accident. Any other modifier combination is unaffected.
         hyper_guard: hyper_guard {
             compatible = "zmk,behavior-hyper-guard";
             #binding-cells = <1>;
@@ -258,64 +273,60 @@
             key-positions = <0 1>;  // Combo q+w for ESCAPE
             bindings = <&kp ESC>;
         };
-        combo_enter_comma_dot {
-            timeout-ms = <25>;
-            key-positions = <27 28>;
-            bindings = <&kp RET>;
-        };
+        // Symbol combos work on every layer and ignore held Shift.
         combo_left_paren {
             timeout-ms = <25>;
-            key-positions = <22 23>;
-            bindings = <&open_paren>;
+            key-positions = <22 23>;  // C+V
+            bindings = <&lpar_fixed>;
         };
         combo_right_paren {
             timeout-ms = <25>;
-            key-positions = <26 27>;
-            bindings = <&close_paren>;
+            key-positions = <26 27>;  // M+COMMA
+            bindings = <&rpar_fixed>;
         };
         combo_left_bracket {
             timeout-ms = <25>;
-            key-positions = <12 13>;
-            bindings = <&open_bracket>;
+            key-positions = <12 13>;  // D+F
+            bindings = <&lbkt_fixed>;
         };
         combo_right_bracket {
             timeout-ms = <25>;
-            key-positions = <16 17>;
-            bindings = <&close_bracket>;
+            key-positions = <16 17>;  // J+K
+            bindings = <&rbkt_fixed>;
         };
         combo_left_brace {
             timeout-ms = <25>;
-            key-positions = <2 3>;
-            bindings = <&open_brace>;
+            key-positions = <2 3>;  // E+R
+            bindings = <&lbrc_fixed>;
         };
         combo_right_brace {
             timeout-ms = <25>;
-            key-positions = <6 7>;
-            bindings = <&close_brace>;
+            key-positions = <6 7>;  // U+I
+            bindings = <&rbrc_fixed>;
         };
         combo_minus {
             timeout-ms = <25>;
-            key-positions = <20 21>;
-            bindings = <&fixed_minus>;
+            key-positions = <20 21>;  // Z+X
+            bindings = <&minus_fixed>;
         };
         combo_equal {
             timeout-ms = <25>;
-            key-positions = <28 29>;
-            bindings = <&fixed_equal>;
+            key-positions = <28 29>;  // .+/
+            bindings = <&equal_fixed>;
         };
-        combo_under {
+        combo_underscore {
             timeout-ms = <25>;
-            key-positions = <10 11>;
-            bindings = <&fixed_under>;
+            key-positions = <10 11>;  // A+S
+            bindings = <&under_fixed>;
         };
         combo_plus {
             timeout-ms = <25>;
-            key-positions = <18 19>;
-            bindings = <&fixed_plus>;
+            key-positions = <18 19>;  // L+backslash
+            bindings = <&plus_fixed>;
         };
         combo_maintenance_layer {
             timeout-ms = <100>;
-            key-positions = <30 35>;
+            key-positions = <30 35>;  // Hold both far outer thumbs.
             bindings = <&mo L3>;
             layers = <L0 L1 L2>;
         };
@@ -328,15 +339,15 @@
         layer_zero {
             display-name = "ABC";
             bindings = <
-        //             ╭───────────┬───────────┬───────────┬───────────┬───────────╮   ╭───────────┬───────────┬───────────┬───────────┬───────────╮
-                       &kp Q       &kp W       &kp E       &kp R       &kp T           &kp Y       &kp U       &kp I       &kp O       &kp P
-        //             ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
-                       &shift_a LSHFT 0 &hml LCTRL S &hmd LALT D &hml LGUI F &kp G   &kp H       &hmr RGUI J &hmr RALT K &hmr RCTRL L &shift_backslash RSHFT 0
-        //             ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
-                       &kp Z       &kp X       &kp C       &kp V       &kp B           &kp N       &kp M       &kp COMMA   &hyper_guard DOT &kp FSLH
-        //             ╰───────────┴───────────┴───────────├───────────├───────────┤   ├───────────├───────────├───────────┴───────────┴───────────╯
-                                             &ht LGUI SQT &lt L1 RET &ht LSHFT TAB  &lt L1 SPACE  &kp BSPC   &ht RGUI SEMI
-        //                                     ╰───────────┴───────────┴───────────╯   ╰───────────┴───────────┴───────────╯
+        //     ╭───────────┬───────────┬───────────┬───────────┬───────────╮   ╭───────────┬───────────┬───────────┬───────────┬───────────╮
+                &kp Q       &kp W       &kp E       &kp R       &kp T           &kp Y       &kp U       &kp I       &kp O       &kp P
+        //     ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
+                &a_shift LSHFT 0 &hml LCTRL S &hmd LALT D &hml LGUI F &kp G     &kp H       &hmr RGUI J &hmr RALT K &hmr RCTRL L &bslash_shift RSHFT 0
+        //     ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
+                &kp Z       &kp X       &kp C       &kp V       &kp B           &kp N       &kp M       &kp COMMA   &hyper_guard DOT &kp FSLH
+        //     ╰───────────┴───────────┴───────────├───────────├───────────┼───────────┤   ├───────────├───────────┼───────────┴───────────┴───────────╯
+                                                &ht LGUI SQT   &lt L1 RET &ht LSHFT TAB &lt L1 SPACE  &kp BSPC   &ht RGUI SEMI
+        //                                         ╰───────────┴───────────┴───────────╯   ╰───────────┴───────────┴───────────╯
             >;
         };
 
@@ -344,15 +355,15 @@
         layer_one {
             display-name = "NUM";
             bindings = <
-        //             ╭───────────┬───────────┬───────────┬───────────┬───────────╮   ╭───────────┬───────────┬───────────┬───────────┬───────────╮
-                       &kp N1      &kp N2      &kp N3      &kp N4      &kp N5          &kp N6      &kp N7      &kp N8      &kp N9      &kp N0
-        //             ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
-                       &kp MINUS   &trans      &trans      &trans      &kp EQUAL       &kp LEFT    &kp DOWN    &kp UP      &kp RIGHT   &ht RSHFT BSLH
-        //             ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
-                       &kp N9      &kp N0      &kp LBKT    &kp RBKT    &kp FSLH        &kp SEMI    &kp SQT     &kp LBKT    &kp RBKT    &none
-        //             ╰───────────┴───────────┴───────────├───────────├───────────┤   ├───────────├───────────├───────────┴───────────┴───────────╯
-                                               &ht LGUI GRAVE &trans   &trans          &trans      &trans      &ht RGUI SEMI
-        //                                     ╰───────────┴───────────┴───────────╯   ╰───────────┴───────────┴───────────╯
+        //     ╭───────────┬───────────┬───────────┬───────────┬───────────╮   ╭───────────┬───────────┬───────────┬───────────┬───────────╮
+                &kp ESC     &kp N1      &kp N2      &kp N3      &trans          &trans      &trans      &kp UP      &kp MINUS   &kp EQUAL
+        //     ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
+                HRML(GRAVE,     N4,         N5,         N6)     &trans          &trans      &kp LEFT    &kp DOWN    &kp RIGHT   &trans
+        //     ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
+                &trans      &kp N7      &kp N8      &kp N9      &kp N0          &kp SEMI    &kp SQT     &kp LBKT    &kp RBKT    &trans
+        //     ╰───────────┴───────────┴───────────├───────────├───────────┼───────────┤   ├───────────├───────────┼───────────┴───────────┴───────────╯
+                                                &ht LGUI GRAVE &trans     &trans          &trans      &trans      &trans
+        //                                         ╰───────────┴───────────┴───────────╯   ╰───────────┴───────────┴───────────╯
             >;
         };
 
@@ -361,25 +372,34 @@
         layer_two {
             display-name = "MED";
             bindings = <
-        //             ╭───────────┬───────────┬───────────┬───────────┬───────────╮   ╭───────────┬───────────┬───────────┬───────────┬───────────╮
-                       &trans      &trans      &trans      &trans      &trans          &kp C_PREV  &kp C_PP    &kp C_NEXT  &kp C_VOL_DN   &kp C_VOL_UP
-        //             ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
-                       &trans      &trans      &trans      &trans      &trans          &trans      &trans      &trans      &kp C_BRI_DN   &kp C_BRI_UP
-        //             ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
-                       &trans      &trans      &trans      &trans      &trans          &trans      &trans      &trans      &trans      &trans
-        //             ╰───────────┴───────────┴───────────├───────────├───────────┤   ├───────────├───────────├───────────┴───────────┴───────────╯
-                                               &trans      &trans      &trans          &trans      &trans      &trans
-        //                                     ╰───────────┴───────────┴───────────╯   ╰───────────┴───────────┴───────────╯
+        //     ╭───────────┬───────────┬───────────┬───────────┬───────────╮   ╭───────────┬───────────┬───────────┬───────────┬───────────╮
+                &trans      &trans      &trans      &trans      &trans          &kp C_PREV  &kp C_PP    &kp C_NEXT  &kp C_VOL_DN   &kp C_VOL_UP
+        //     ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
+                &trans      &trans      &trans      &trans      &trans          &trans      &trans      &trans      &kp C_BRI_DN   &kp C_BRI_UP
+        //     ├───────────├───────────├───────────├───────────├───────────┤   ├───────────├───────────├───────────├───────────├───────────┤
+                &trans      &trans      &trans      &trans      &trans          &trans      &trans      &trans      &trans      &trans
+        //     ╰───────────┴───────────┴───────────├───────────├───────────┼───────────┤   ├───────────├───────────┼───────────┴───────────┴───────────╯
+                                                   &trans      &trans      &trans          &trans      &trans      &trans
+        //                                         ╰───────────┴───────────┴───────────╯   ╰───────────┴───────────┴───────────╯
             >;
         };
 
+        // Dedicated maintenance layer. Hold both far outer thumbs (positions
+        // 30 and 35) to activate it. This leaves the center Shift + L1 thumb
+        // chord completely untouched. The bootloader holds sit on Q/P; hold
+        // the corresponding side for two seconds to enter that half's UF2
+        // bootloader. Bluetooth clear is on K.
+        //
+        // `T` is a third 2s bootloader hold, for the USB dongle in dongle mode
+        // (the left half when standalone). It sits on the inner column, between
+        // the two halves' pinky holds, like the dongle sits between the halves.
         layer_three {
             display-name = "SYS";
             bindings = <
-                       &bhold      &bt BT_CLR  &trans      &trans      &bhold_dongle   &trans      &trans      &trans      &trans      &bhold
-                       &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &trans     &trans      &trans      &trans      &trans      &trans
-                       &trans      &trans      &trans      &trans      &trans          &trans      &trans      &trans      &trans      &trans
-                                               &trans      &trans      &trans          &trans      &trans      &trans
+                &bhold &none &none &none &bhold_dongle   &none &none &none &none &bhold
+                &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &none   &none &none &bt BT_CLR &none &none
+                &none &none &none &none &none   &none &none &none &none &none
+                      &none &none &trans              &trans &none &none
             >;
         };
     };

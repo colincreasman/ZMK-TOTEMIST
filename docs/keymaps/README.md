@@ -1,5 +1,14 @@
 # Experimental keymaps
 
+The shipped [config/totem.keymap](../../config/totem.keymap) now mirrors the
+Toucan2 keymap tagged `stable-2026-11-12-hrm-caps-word`, minus the Toucan's
+outer pinky columns, trackpad layer and OS-mode keys (those only drive
+trackpad gestures). Compared with v2 below, `,+.` no longer gives Enter, L1
+puts `1`–`3`, `4`–`6` (on home-row mods) and `7`–`0` on the left hand with
+arrows on I/J/K/L, and shifted A/backslash taps go through the Caps Word
+double-tap like on the Toucan. The maintenance layer puts Bluetooth clear
+on K.
+
 These are Totemist adaptations of the two Toucan keymap experiments. Both keep
 the Escape combos and maintenance layer. V2 uses Toucan commit `4d3364d`'s
 balanced home-row mods, with a shorter hold threshold and prior-idle gate for D.
