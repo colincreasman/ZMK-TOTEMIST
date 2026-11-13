@@ -9,7 +9,6 @@ import sys
 
 test_dir = Path(__file__).resolve().parent
 repo = test_dir.parents[1]
-source = (repo / "config/totem.keymap").read_text()
 fixture = (test_dir / "native_posix_64.keymap").read_text()
 
 
@@ -25,18 +24,22 @@ def node(text, name):
     return re.sub(r"\s+", "", text[match.start() : end + 1])
 
 
-left = node(source, "home_row_mod_left")
-if left != node(fixture, "home_row_mod_left"):
-    sys.exit("Left home-row mod differs from the native test")
-right = left.replace("hml:home_row_mod_left", "hmr:home_row_mod_right").replace(
-    '"hrm_left"', '"hrm_right"'
-)
-if right != node(source, "home_row_mod_right"):
-    sys.exit("Right home-row mod differs from the native test")
-if node(source, "home_row_mod_d") != node(fixture, "home_row_mod_d"):
-    sys.exit("D home-row mod differs from the native test")
-if "&hmd LALT D" not in source:
-    sys.exit("D home-row mod binding is missing")
+for keymap in (repo / "config/totem.keymap",):
+    source = keymap.read_text()
+    left = node(source, "home_row_mod_left")
+    if left != node(fixture, "home_row_mod_left"):
+        sys.exit(f"Left home-row mod in {keymap} differs from the native test")
+    right = left.replace("hml:home_row_mod_left", "hmr:home_row_mod_right").replace(
+        '"hrm_left"', '"hrm_right"'
+    )
+    if right != node(source, "home_row_mod_right"):
+        sys.exit(f"Right home-row mod in {keymap} differs from the native test")
+    if node(source, "home_row_mod_d") != node(fixture, "home_row_mod_d"):
+        sys.exit(f"D home-row mod in {keymap} differs from the native test")
+    if "&hmd LALT D" not in source:
+        sys.exit(f"D home-row mod binding is missing from {keymap}")
+    if "&lt L1 RET &ht LSHFT TAB &lt L1 SPACE  &kp BSPC" not in source:
+        sys.exit(f"Enter/L1 or Backspace thumb binding is missing from {keymap}")
 zmk = os.environ.get("ZMK_SRC_DIR")
 if not zmk:
     sys.exit("Set ZMK_SRC_DIR to the ZMK app directory")

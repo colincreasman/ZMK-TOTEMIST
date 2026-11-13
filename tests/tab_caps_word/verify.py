@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run with ZMK_SRC_DIR set to a prepared ZMK app workspace."""
+"""Verify the shipped behaviors and run the native Caps Word test."""
 
 import os
 from pathlib import Path
@@ -10,22 +10,20 @@ import sys
 test_dir = Path(__file__).resolve().parent
 repo = test_dir.parents[1]
 fixture = (test_dir / "native_posix_64.keymap").read_text()
-keymaps = [repo / "config/totem.keymap"]
-for keymap in keymaps:
+
+for keymap in (repo / "config/totem.keymap",):
     source = keymap.read_text()
-    for label, name in (("ht", "hold_tap"), ("a_caps_dance", "a_caps_dance"),
-                        ("backslash_caps_dance", "backslash_caps_dance"),
-                        ("a_tap", "a_tap"), ("backslash_tap", "backslash_tap"),
-                        ("shift_a", "shift_a"), ("shift_backslash", "shift_backslash")):
-        pattern = rf"{label}:\s*{name}\s*\{{[^{{}}]*\}};"
+    for name in ("hold_tap", "a_caps_dance", "bslash_caps_dance", "a_shift", "bslash_shift"):
+        pattern = rf"\w+:\s*{name}\s*\{{[^{{}}]*\}};"
         actual = re.search(pattern, source)
         expected = re.search(pattern, fixture)
         if not actual or not expected or actual.group() != expected.group():
             sys.exit(f"{name} in {keymap} differs from the native test")
-    if any(binding not in source for binding in (
-        "&ht LSHFT TAB", "&shift_a LSHFT 0", "&shift_backslash RSHFT 0"
-    )):
-        sys.exit(f"Tab/Shift thumb binding missing from {keymap}")
+    for binding in ("&a_shift LSHFT 0", "&bslash_shift RSHFT 0", "&ht LSHFT TAB"):
+        if binding not in source:
+            sys.exit(f"{binding} missing from {keymap}")
+    if "tab_caps_dance" in source or "tab_shift" in source:
+        sys.exit(f"Tab Caps Word behavior remains in {keymap}")
 
 zmk = os.environ.get("ZMK_SRC_DIR")
 if not zmk:
